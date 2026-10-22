@@ -1,0 +1,438 @@
+---
+import Base from '../layouts/Base.astro';
+import { content, site, type Lang } from '../i18n/content';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = content[lang];
+const cvHref = `/cv/Gabriel-Santana-CV-${lang.toUpperCase()}.pdf`;
+const year = new Date().getFullYear();
+const [sango, ...rest] = t.work.projects;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'ProfilePage',
+      '@id': `${site.url}${t.path}#page`,
+      url: `${site.url}${t.path}`,
+      name: t.meta.title,
+      description: t.meta.description,
+      inLanguage: t.lang === 'es' ? 'es-MX' : 'en',
+      dateModified: new Date().toISOString().slice(0, 10),
+      mainEntity: { '@id': `${site.url}/#person` },
+    },
+    {
+      '@type': 'Person',
+      '@id': `${site.url}/#person`,
+      name: site.name,
+      alternateName: site.fullName,
+      givenName: 'Carlos Gabriel',
+      familyName: 'Santana Pulido',
+      jobTitle: 'Senior Fullstack Developer',
+      url: site.url,
+      image: `${site.url}/img/portrait-1000.jpg`,
+      email: `mailto:${site.email}`,
+      address: { '@type': 'PostalAddress', addressLocality: 'Guadalajara', addressRegion: 'Jalisco', addressCountry: 'MX' },
+      worksFor: { '@type': 'Organization', name: 'Deloitte', url: 'https://www.deloitte.com' },
+      founder: { '@id': `${site.url}/#buca` },
+      alumniOf: { '@type': 'CollegeOrUniversity', name: 'Universidad de Guadalajara', url: 'https://www.udg.mx' },
+      hasCredential: { '@type': 'EducationalOccupationalCredential', name: 'Certified SCRUM Developer', credentialCategory: 'certification' },
+      knowsAbout: ['Java', 'Spring Boot', 'TypeScript', 'Next.js', 'React', 'Angular', 'PostgreSQL', 'Android', 'Ionic', 'AWS', 'GCP', 'Row-Level Security', 'Electronic Health Records'],
+      knowsLanguage: ['es', 'en'],
+      sameAs: [site.linkedin, site.github],
+    },
+    {
+      '@type': 'Organization',
+      '@id': `${site.url}/#buca`,
+      name: 'Buca Digital Works',
+      legalName: t.buca.legal,
+      founder: { '@id': `${site.url}/#person` },
+      logo: `${site.url}/icon-512.png`,
+      address: { '@type': 'PostalAddress', addressLocality: 'Guadalajara', addressCountry: 'MX' },
+    },
+    {
+      '@type': 'SoftwareApplication',
+      name: 'notex.clinic',
+      url: 'https://notex.clinic',
+      applicationCategory: 'HealthApplication',
+      operatingSystem: 'Web',
+      creator: { '@id': `${site.url}/#person` },
+      publisher: { '@id': `${site.url}/#buca` },
+    },
+    {
+      '@type': 'MobileApplication',
+      name: 'SA Móvil',
+      operatingSystem: 'Android',
+      applicationCategory: 'LifestyleApplication',
+      installUrl: 'https://play.google.com/store/apps/details?id=bucapps.samovil',
+      creator: { '@id': `${site.url}/#person` },
+    },
+  ],
+};
+
+const arrow = '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M6 14 14 6M7 6h7v7" stroke="currentColor" stroke-width="1.6"/></svg>';
+const down = '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M5 11l5 5 5-5" stroke="currentColor" stroke-width="1.6"/></svg>';
+---
+
+<Base t={t} jsonLd={jsonLd}>
+  <a class="skip" href="#main">{t.skip}</a>
+
+  <header class="site-header" data-header>
+    <div class="wrap header-inner">
+      <a class="brand" href={t.path} aria-label={site.name}>
+        <img src="/media/isotipo-crema.svg" alt="" width="26" height="26" />
+        <span>Gabriel Santana</span>
+      </a>
+      <nav class="nav" aria-label="Principal">
+        <a href="#work">{t.nav.work}</a>
+        <a href="#experience">{t.nav.experience}</a>
+        <a href="#stack">{t.nav.stack}</a>
+        <a href="#about">{t.nav.about}</a>
+        <a href="#contact">{t.nav.contact}</a>
+      </nav>
+      <div class="header-tools">
+        <span class="clock mono" aria-hidden="true">GDL <b data-clock>--:--</b></span>
+        <a class="lang" href={t.altPath} hreflang={t.lang === 'es' ? 'en' : 'es-MX'} lang={t.lang === 'es' ? 'en' : 'es'} aria-label={`${t.altLabel} · ${t.altName}`}>{t.altLabel}</a>
+        <a class="btn btn--sm" href={cvHref} download aria-label={t.nav.cv}><span class="hide-sm">{t.nav.cv}</span><span class="only-sm">CV</span></a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero" aria-labelledby="hero-name">
+      <div class="wrap">
+        <div class="hero-grid">
+          <div>
+            <p class="hero-eyebrow mono hero-fade"><span class="dot" aria-hidden="true"></span>{t.hero.eyebrow}</p>
+            <h1 id="hero-name" class="hero-name display">
+              <span class="line"><span>Gabriel</span></span>
+              <span class="line"><span class="outline">Santana</span></span>
+            </h1>
+          </div>
+          <figure class="portrait">
+            <div class="portrait-frame">
+              <picture>
+                <source type="image/avif" srcset="/img/portrait-600.avif 600w, /img/portrait-1000.avif 838w" sizes="(max-width: 860px) 300px, 32vw" />
+                <source type="image/webp" srcset="/img/portrait-600.webp 600w, /img/portrait-1000.webp 838w" sizes="(max-width: 860px) 300px, 32vw" />
+                <img src="/img/portrait-600.jpg" alt={t.hero.portraitAlt} width="600" height="901" fetchpriority="high" data-parallax />
+              </picture>
+              <img class="portrait-mark" src="/media/isotipo-crema.svg" alt="" width="30" height="30" />
+            </div>
+            <figcaption class="mono"><span>{site.city}</span><span>{site.coords}</span></figcaption>
+          </figure>
+        </div>
+
+        <div class="hero-copy">
+          <div>
+            <p class="hero-lede hero-fade" style="--i:1">{t.hero.lede}</p>
+            <div class="hero-actions hero-fade" style="--i:3">
+              <a class="btn" href="#work">{t.hero.ctaWork}<Fragment set:html={down} /></a>
+              <a class="btn btn--ghost" href={cvHref} download>{t.hero.ctaCv}</a>
+            </div>
+          </div>
+          <div class="hero-fade" style="--i:2">
+            <p class="hero-body">{t.hero.body}</p>
+            <dl class="status mono">
+              {t.hero.status.map(([k, v]) => (<div><dt>{k}</dt><dd>{v}</dd></div>))}
+            </dl>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Work -->
+    <section id="work" class="section" aria-labelledby="work-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="section-label mono" data-reveal><span>{t.work.index}</span><span>/</span><span>{t.work.title}</span></p>
+            <h2 id="work-title" class="section-title display" data-reveal style="--i:1">{t.work.title}</h2>
+          </div>
+          <p class="section-intro" data-reveal style="--i:2">{t.work.intro}</p>
+        </div>
+
+        <article class="feature" data-reveal aria-labelledby="notex-title">
+          <img class="feature-mark" src="/media/isotipo-carbon.svg" alt="" width="460" height="460" loading="lazy" />
+          <div class="feature-top">
+            <div>
+              <p class="tag mono">{t.work.notex.tag}</p>
+              <h3 id="notex-title" class="feature-title display">{t.work.notex.title}</h3>
+              <p class="feature-summary">{t.work.notex.summary}</p>
+              <a class="btn" href="https://notex.clinic" target="_blank" rel="noopener">{t.work.notex.link}<Fragment set:html={arrow} /></a>
+            </div>
+            <dl class="metrics">
+              {t.work.notex.metrics.map(([n, l]) => (
+                <div class="metric"><dd class="metric-num" data-count={n}>{n}</dd><dt class="metric-label">{l}</dt></div>
+              ))}
+            </dl>
+          </div>
+          <div class="feature-bottom">
+            <div>
+              <h3 class="mono">{t.work.notex.decisionsTitle}</h3>
+              <ol class="decisions">{t.work.notex.decisions.map((d) => <li>{d}</li>)}</ol>
+            </div>
+            <div>
+              <h3 class="mono">Stack</h3>
+              <ul class="chips">{t.work.notex.stack.map((s) => <li class="chip">{s}</li>)}</ul>
+            </div>
+          </div>
+        </article>
+
+        <article class="showcase" aria-labelledby="sango-title">
+          <div>
+            <p class="project-tag mono" data-reveal>{sango.tag}</p>
+            <h3 id="sango-title" class="project-title" data-reveal style="--i:1">{sango.title}</h3>
+            <p class="project-body" data-reveal style="--i:2">{sango.body}</p>
+            <p class="project-meta mono" data-reveal style="--i:3">{sango.meta}</p>
+            <ul class="chips" data-reveal style="--i:4">{sango.stack.map((s) => <li class="chip">{s}</li>)}</ul>
+          </div>
+          <div class="phone" data-reveal style="--i:2">
+            <video data-autoplay muted loop playsinline preload="none" poster="/media/sango-poster.webp" aria-label={t.work.videoLabel} width="540" height="960">
+              <source src="/media/sango-reel.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </article>
+
+        <div class="plist">
+          {rest.map((p, i) => (
+            <article class="prow" data-reveal style={`--i:${i}`} aria-labelledby={`p-${p.id}`}>
+              <div>
+                <p class="project-tag mono">{p.tag}</p>
+                <h3 id={`p-${p.id}`} class="project-title">{p.title}</h3>
+              </div>
+              <div>
+                <p class="project-body">{p.body}</p>
+                <p class="project-meta mono">{p.meta}</p>
+                <ul class="chips">{p.stack.map((s) => <li class="chip">{s}</li>)}</ul>
+              </div>
+              {p.href && (
+                <a class="prow-link" href={p.href} target="_blank" rel="noopener" aria-label={`${p.linkLabel}: ${p.title}`}><Fragment set:html={arrow} /></a>
+              )}
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Buca -->
+    <section class="buca" aria-labelledby="buca-title">
+      <div class="wrap buca-inner">
+        <div class="buca-anim">
+          <buca-logo-animation theme="carbon" format="banner" autoplay="false" aria-hidden="true"></buca-logo-animation>
+        </div>
+        <div data-reveal>
+          <h2 id="buca-title" class="mono" style="color:var(--crema-faint);margin-bottom:16px">{t.buca.title}</h2>
+          <p>{t.buca.body}</p>
+          <p class="mono">{t.buca.legal}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience -->
+    <section id="experience" class="section" aria-labelledby="exp-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="section-label mono" data-reveal><span>{t.experience.index}</span><span>/</span><span>{t.experience.title}</span></p>
+            <h2 id="exp-title" class="section-title display" data-reveal style="--i:1">{t.experience.title}</h2>
+          </div>
+        </div>
+        <ol class="jobs">
+          {t.experience.jobs.map((j, i) => (
+            <li class="job" data-reveal>
+              <p class:list={['job-period mono', { 'is-now': i === 0 }]}>{j.period}</p>
+              <div>
+                <h3 class="job-company">{j.company}</h3>
+                <p class="job-role">{j.role}</p>
+              </div>
+              <ul>{j.points.map((pt) => <li>{pt}</li>)}</ul>
+            </li>
+          ))}
+        </ol>
+        <div class="edu" data-reveal>
+          <h3 class="mono">{t.experience.educationTitle}</h3>
+          {t.experience.education.map(([a, b]) => (<p class="edu-item"><strong>{a}</strong><span>{b}</span></p>))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Stack -->
+    <section id="stack" class="section" style="padding-top:0" aria-labelledby="stack-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="section-label mono" data-reveal><span>{t.stack.index}</span><span>/</span><span>{t.stack.title}</span></p>
+            <h2 id="stack-title" class="section-title display" data-reveal style="--i:1">{t.stack.title}</h2>
+          </div>
+        </div>
+        <div class="stack-grid">
+          {t.stack.groups.map(([g, items], i) => (
+            <div class="stack-group" data-reveal style={`--i:${i % 3}`}>
+              <h3 class="mono">{g}</h3>
+              <ul>{items.map((s) => <li>{s}</li>)}</ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="section" style="padding-top:0" aria-labelledby="about-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="section-label mono" data-reveal><span>{t.about.index}</span><span>/</span><span>{t.about.title}</span></p>
+            <h2 id="about-title" class="section-title display" data-reveal style="--i:1">{t.about.title}</h2>
+          </div>
+        </div>
+        <div class="about-grid">
+          <p class="first" data-reveal>{t.about.body[0]}</p>
+          <p data-reveal style="--i:1">{t.about.body[1]}</p>
+        </div>
+        <div class="off">
+          <div class="off-head" data-reveal>
+            <h3 class="mono">{t.about.offTitle}</h3>
+            <p>{t.about.off}</p>
+          </div>
+          <div class="strip">
+            {t.about.photos.map(([src, alt, cap], i) => (
+              <figure data-reveal style={`--i:${i}`}>
+                <div class="ph">
+                  <picture>
+                    <source type="image/avif" srcset={`/img/${src}-${src === 'offcode-chichen' ? 900 : 700}.avif`} />
+                    <source type="image/webp" srcset={`/img/${src}-${src === 'offcode-chichen' ? 900 : 700}.webp`} />
+                    <img src={`/img/${src}-${src === 'offcode-chichen' ? 900 : 700}.jpg`} alt={alt} loading="lazy" decoding="async" width="700" height="900" />
+                  </picture>
+                </div>
+                <figcaption class="mono">{cap}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section contact" aria-labelledby="contact-title">
+      <div class="wrap">
+        <p class="section-label mono" data-reveal><span>{t.contact.index}</span><span>/</span><span>{t.nav.contact}</span></p>
+        <h2 id="contact-title" class="contact-title display" data-reveal style="--i:1">{t.contact.title}</h2>
+        <div class="contact-row">
+          <div data-reveal>
+            <p>{t.contact.body}</p>
+            <div class="email">
+              <a href={`mailto:${site.email}`} aria-label={`${t.contact.email}: ${site.email}`}>{site.email}</a>
+              <button class="copy" type="button" data-copy={site.email} data-copied={t.contact.copied}>{t.contact.copy}</button>
+            </div>
+          </div>
+          <div class="socials" data-reveal style="--i:1">
+            <a class="btn btn--ghost" href={site.linkedin} target="_blank" rel="noopener me">LinkedIn<Fragment set:html={arrow} /></a>
+            <a class="btn btn--ghost" href={site.github} target="_blank" rel="noopener me">GitHub<Fragment set:html={arrow} /></a>
+            <a class="btn" href={cvHref} download>{t.nav.cv}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner mono">
+      <span class="left"><img src="/media/isotipo-crema.svg" alt="" width="22" height="22" loading="lazy" />© {year} {t.footer.rights}</span>
+      <span>{t.footer.built}</span>
+      <span>{site.coords}</span>
+    </div>
+  </footer>
+
+  <script is:inline src="/media/buca-logo-animation.js" defer></script>
+  <script>
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Header: solid after the hero starts scrolling, hides on scroll down
+    const header = document.querySelector<HTMLElement>('[data-header]')!;
+    let lastY = scrollY;
+    addEventListener('scroll', () => {
+      const y = scrollY;
+      header.classList.toggle('is-scrolled', y > 24);
+      header.classList.toggle('is-hidden', y > 400 && y > lastY + 4);
+      if (y < lastY - 4) header.classList.remove('is-hidden');
+      lastY = y;
+    }, { passive: true });
+
+    // Guadalajara local time
+    const clock = document.querySelector('[data-clock]');
+    if (clock) {
+      const fmt = new Intl.DateTimeFormat('es-MX', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'America/Mexico_City' });
+      const tick = () => { clock.textContent = fmt.format(new Date()); };
+      tick();
+      setInterval(tick, 30_000);
+    }
+
+    // Count-up for numeric metrics
+    const countUp = (el: HTMLElement) => {
+      const target = Number(el.dataset.count);
+      if (!target || reduce) return;
+      const start = performance.now();
+      const dur = 1400;
+      const step = (now: number) => {
+        const p = Math.min(1, (now - start) / dur);
+        el.textContent = String(Math.round(target * (1 - Math.pow(1 - p, 4))));
+        if (p < 1) requestAnimationFrame(step);
+      };
+      el.textContent = '0';
+      requestAnimationFrame(step);
+    };
+
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        e.target.classList.add('is-in');
+        e.target.querySelectorAll<HTMLElement>('[data-count]').forEach(countUp);
+        io.unobserve(e.target);
+      }
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.12 });
+    document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+
+    // Video and logo animation only run while visible
+    const media = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        const el = e.target as HTMLVideoElement & { play(): void; pause(): void; restart?(): void };
+        if (e.isIntersecting) {
+          if (el.tagName === 'VIDEO') { if (!reduce) el.play().catch(() => {}); }
+          else if (!el.dataset.played) { el.dataset.played = '1'; reduce ? (el as any).seek?.(4) : el.play(); }
+        } else if (el.tagName === 'VIDEO') el.pause();
+      }
+    }, { threshold: 0.35 });
+    document.querySelectorAll('video[data-autoplay]').forEach((v) => media.observe(v));
+    customElements.whenDefined('buca-logo-animation').then(() => {
+      document.querySelectorAll('buca-logo-animation').forEach((el) => media.observe(el));
+    });
+
+    // Subtle parallax on the portrait
+    const pic = document.querySelector<HTMLElement>('[data-parallax]');
+    if (pic && !reduce) {
+      let ticking = false;
+      addEventListener('scroll', () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          pic.style.transform = `translateY(${Math.min(scrollY, 900) * -0.06}px)`;
+          ticking = false;
+        });
+      }, { passive: true });
+    }
+
+    // Copy email
+    document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((b) => {
+      const label = b.textContent;
+      b.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(b.dataset.copy!);
+          b.textContent = b.dataset.copied!;
+          setTimeout(() => { b.textContent = label; }, 1600);
+        } catch { location.href = `mailto:${b.dataset.copy}`; }
+      });
+    });
+  </script>
+</Base>

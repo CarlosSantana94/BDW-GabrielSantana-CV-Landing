@@ -1,0 +1,122 @@
+---
+// Printable résumé. scripts/build-cv.mjs renders it to A4 PDF in public/cv/.
+import '@fontsource-variable/archivo/wdth.css';
+import '@fontsource-variable/jetbrains-mono/wght.css';
+import { content, site, type Lang } from '../i18n/content';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = content[lang];
+const host = site.url.replace('https://', '');
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{`${site.fullName} · ${t.cv.title}`}</title>
+    <meta name="author" content={site.fullName} />
+    <style>
+      @page { size: A4; margin: 0; }
+      :root { --ink: #2a2a2a; --soft: #5b5750; --faint: #8a8478; --paper: #f1eadb; --line: rgb(42 42 42 / 0.18); --signal: #c8471f; }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; background: #ddd; }
+      body { font-family: 'Archivo Variable', system-ui, sans-serif; color: var(--ink); font-size: 9.2pt; line-height: 1.45; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .sheet { width: 210mm; min-height: 297mm; margin: 0 auto; background: var(--paper); padding: 14mm 14mm 12mm; position: relative; }
+      @media print { html, body { background: var(--paper); } .sheet { margin: 0; } }
+      .mono { font-family: 'JetBrains Mono Variable', monospace; font-size: 7.2pt; letter-spacing: 0.05em; text-transform: uppercase; }
+      header { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 8mm; padding-bottom: 6mm; border-bottom: 1.4pt solid var(--ink); }
+      h1 { margin: 0; font-size: 30pt; font-weight: 800; font-stretch: 125%; line-height: 0.9; letter-spacing: -0.02em; text-transform: uppercase; }
+      .role { margin-top: 3mm; font-size: 11pt; font-weight: 600; font-stretch: 108%; }
+      .contact { text-align: right; display: grid; gap: 1.2mm; color: var(--soft); }
+      .contact a { color: var(--ink); text-decoration: none; }
+      .mark { position: absolute; top: 14mm; right: 14mm; width: 9mm; opacity: 0.9; }
+      .summary { margin: 5mm 0 0; font-size: 10pt; line-height: 1.5; max-width: 165mm; }
+      .cols { display: grid; grid-template-columns: 1fr 52mm; gap: 9mm; margin-top: 6mm; }
+      h2 { margin: 0 0 3mm; color: var(--faint); font-weight: 500; }
+      section + section { margin-top: 5.5mm; }
+      .job { display: grid; grid-template-columns: 1fr auto; gap: 0 4mm; padding: 2.6mm 0; border-top: 0.6pt solid var(--line); break-inside: avoid; }
+      .job h3 { margin: 0; font-size: 11pt; font-weight: 800; font-stretch: 115%; letter-spacing: -0.01em; }
+      .job .r { color: var(--soft); font-weight: 500; }
+      .job .p { color: var(--faint); white-space: nowrap; padding-top: 1mm; }
+      .job .p.now { color: var(--signal); }
+      .job ul { grid-column: 1 / -1; margin: 1.6mm 0 0; padding-left: 3.6mm; color: #3b3935; }
+      .job li { margin: 0.6mm 0; }
+      aside section { border-top: 0.6pt solid var(--line); padding-top: 2.6mm; }
+      .group { margin-bottom: 2.6mm; }
+      .group strong { display: block; font-size: 8pt; font-weight: 700; margin-bottom: 0.6mm; }
+      .group span { color: #3b3935; }
+      .edu strong { display: block; font-weight: 700; }
+      .edu span { color: var(--soft); }
+      .edu p { margin: 0 0 2.4mm; }
+      footer { position: absolute; left: 14mm; right: 14mm; bottom: 9mm; display: flex; justify-content: space-between; color: var(--faint); }
+    </style>
+  </head>
+  <body>
+    <main class="sheet">
+      <header>
+        <div>
+          <p class="mono" style="margin:0 0 3mm;color:var(--faint)">{t.cv.title} · {site.city}</p>
+          <h1>Carlos Gabriel<br />Santana Pulido</h1>
+          <p class="role">Senior Fullstack Developer</p>
+        </div>
+        <div class="contact mono">
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+          <span>{site.phone}</span>
+          <a href={site.linkedin}>linkedin.com/in/carlossp-dev</a>
+          <a href={site.github}>github.com/CarlosSantana94</a>
+          <a href={site.url}>{host}</a>
+        </div>
+      </header>
+
+      <p class="summary">{t.cv.summary}</p>
+
+      <div class="cols">
+        <div>
+          <section>
+            <h2 class="mono">{t.cv.experience}</h2>
+            {t.experience.jobs.slice(0, 1).map((j) => (
+              <div class="job">
+                <h3>{j.company} <span class="r">· {j.role}</span></h3>
+                <span class="p now mono">{j.period}</span>
+                <ul>{j.points.map((p) => <li>{p}</li>)}</ul>
+              </div>
+            ))}
+            <div class="job">
+              <h3>Buca Digital Works <span class="r">· {t.cv.founder}</span></h3>
+              <span class="p now mono">{t.experience.present}</span>
+              <ul>{t.cv.founderPoints.map((p) => <li>{p}</li>)}</ul>
+            </div>
+            {t.experience.jobs.slice(1).map((j) => (
+              <div class="job">
+                <h3>{j.company} <span class="r">· {j.role}</span></h3>
+                <span class="p mono">{j.period}</span>
+                <ul>{j.points.map((p) => <li>{p}</li>)}</ul>
+              </div>
+            ))}
+          </section>
+        </div>
+
+        <aside>
+          <section>
+            <h2 class="mono">{t.cv.skills}</h2>
+            {t.stack.groups.map(([g, items]) => (
+              <div class="group"><strong>{g}</strong><span>{items.join(', ')}</span></div>
+            ))}
+          </section>
+          <section class="edu">
+            <h2 class="mono">{t.cv.education}</h2>
+            {t.experience.education.map(([a, b]) => (<p><strong>{a}</strong><span>{b}</span></p>))}
+          </section>
+          <section>
+            <h2 class="mono">{t.cv.languages}</h2>
+            <p style="margin:0">{t.cv.languageList}</p>
+          </section>
+        </aside>
+      </div>
+
+      <footer class="mono"><span>Buca Digital Works</span><span>{host}</span></footer>
+    </main>
+  </body>
+</html>

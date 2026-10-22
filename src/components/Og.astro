@@ -1,0 +1,46 @@
+---
+// 1200×630 social card. scripts/build-cv.mjs screenshots it to public/og-{lang}.png.
+import '@fontsource-variable/archivo/wdth.css';
+import '@fontsource-variable/jetbrains-mono/wght.css';
+import { content, site, type Lang } from '../i18n/content';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = content[lang];
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <style>
+      html, body { margin: 0; }
+      body { width: 1200px; height: 630px; overflow: hidden; background: #1c1b1a; color: #f1eadb; font-family: 'Archivo Variable', sans-serif; }
+      .card { position: relative; height: 100%; display: grid; grid-template-columns: 1fr 380px; }
+      .left { padding: 64px 0 56px 72px; display: flex; flex-direction: column; justify-content: space-between; }
+      .mono { font-family: 'JetBrains Mono Variable', monospace; font-size: 18px; letter-spacing: 0.05em; text-transform: uppercase; color: #aaa398; display: flex; align-items: center; gap: 12px; }
+      .dot { width: 12px; height: 12px; border-radius: 50%; background: #e4572e; }
+      h1 { margin: 0; font-size: 104px; font-weight: 800; font-stretch: 125%; line-height: 0.88; letter-spacing: -0.02em; text-transform: uppercase; }
+      h1 span { display: block; color: transparent; -webkit-text-stroke: 2px #f1eadb; padding-left: 0.4em; }
+      .lede { font-size: 30px; font-weight: 600; font-stretch: 108%; margin-top: 28px; }
+      .foot { display: flex; align-items: center; gap: 16px; }
+      .foot img { width: 34px; }
+      .photo { position: relative; overflow: hidden; }
+      .photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="left">
+        <p class="mono" style="margin:0"><span class="dot"></span>Senior Fullstack Developer</p>
+        <div>
+          <h1>Gabriel<span>Santana</span></h1>
+          <p class="lede">{t.hero.lede}</p>
+        </div>
+        <div class="foot mono"><img src="/media/isotipo-crema.svg" alt="" />Buca Digital Works · {site.url.replace('https://', '')}</div>
+      </div>
+      <div class="photo"><img src="/img/og-src-800.jpg" alt="" /></div>
+    </div>
+  </body>
+</html>
