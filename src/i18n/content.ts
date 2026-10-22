@@ -160,7 +160,7 @@ const es = {
     educationTitle: 'Formación',
     education: [
       ['Ingeniería en Computación', 'Universidad de Guadalajara · 2012 — 2017', 'udg'],
-      ['Intercambio académico', 'University of Colorado Colorado Springs (UCCS), EUA · 2º semestre 2010', 'uccs'],
+      ['Intercambio académico', 'University of Colorado Colorado Springs (UCCS), EUA · 1er semestre 2015', 'uccs'],
       ['Intercambio académico', 'Universidad del Caribe, Cancún · 2º semestre 2016', 'unicaribe'],
       ['Certified SCRUM Developer', 'Scrum Alliance · 2021'],
       ['Certificación Claude', 'Anthropic · En curso, 2026'],
@@ -380,7 +380,7 @@ const en: Content = {
     educationTitle: 'Education',
     education: [
       ['B.S. Computer Engineering', 'Universidad de Guadalajara · 2012 — 2017', 'udg'],
-      ['Exchange semester', 'University of Colorado Colorado Springs (UCCS), USA · Fall 2010', 'uccs'],
+      ['Exchange semester', 'University of Colorado Colorado Springs (UCCS), USA · Spring 2015', 'uccs'],
       ['Exchange semester', 'Universidad del Caribe, Cancún, Mexico · Fall 2016', 'unicaribe'],
       ['Certified SCRUM Developer', 'Scrum Alliance · 2021'],
       ['Claude certification', 'Anthropic · In progress, 2026'],
