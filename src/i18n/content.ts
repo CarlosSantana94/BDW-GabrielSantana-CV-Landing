@@ -112,7 +112,7 @@ const es = {
   buca: {
     title: 'Buca Digital Works',
     body: 'Mi estudio. Una empresa pequeña, a propósito: pocos proyectos, de principio a fin, con el mismo cuidado que pongo en mi propio producto.',
-    legal: 'Buca Digital Works SAS de CV',
+    legal: 'Buca Digital Works SAS',
   },
   experience: {
     index: '02',
@@ -333,7 +333,7 @@ const en: Content = {
   buca: {
     title: 'Buca Digital Works',
     body: 'My studio. Small on purpose: few projects, owned start to finish, with the same care I put into my own product.',
-    legal: 'Buca Digital Works SAS de CV',
+    legal: 'Buca Digital Works SAS',
   },
   experience: {
     index: '02',
