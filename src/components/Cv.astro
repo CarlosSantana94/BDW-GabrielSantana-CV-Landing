@@ -47,9 +47,10 @@ const host = site.url.replace('https://', '');
       .group { margin-bottom: 2mm; }
       .group strong { display: block; font-size: 8pt; font-weight: 700; margin-bottom: 0.6mm; }
       .group span { color: #3b3935; }
-      .edu strong { display: block; font-weight: 700; }
+      .edu strong { font-weight: 700; }
       .edu span { color: var(--soft); }
-      .edu p { margin: 0 0 2.4mm; }
+      .edu span::before { content: ' · '; }
+      .edu p { margin: 0 0 1.6mm; }
       footer { position: absolute; left: 14mm; right: 14mm; bottom: 9mm; display: flex; justify-content: space-between; color: var(--faint); }
     </style>
   </head>
@@ -107,7 +108,6 @@ const host = site.url.replace('https://', '');
           </section>
           <section class="edu">
             <h2 class="mono">{t.cv.education}</h2>
-            <img src="/media/udg-carbon.png" alt="Universidad de Guadalajara" style="width:30mm;height:auto;margin:0 0 2.4mm;opacity:.9" />
             {t.experience.education.map(([a, b]) => (<p><strong>{a}</strong><span>{b}</span></p>))}
           </section>
           <section>

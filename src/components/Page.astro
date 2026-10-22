@@ -252,12 +252,14 @@ const down = '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M
           ))}
         </ol>
         <div class="edu" data-reveal>
-          <div class="edu-head">
-            <h3 class="mono">{t.experience.educationTitle}</h3>
-            <img class="edu-logo" src="/media/udg-crema.png" alt="Universidad de Guadalajara" width="584" height="180" loading="lazy" decoding="async" />
-          </div>
+          <h3 class="mono">{t.experience.educationTitle}</h3>
           <div class="edu-list">
-            {t.experience.education.map(([a, b]) => (<p class="edu-item"><strong>{a}</strong><span>{b}</span></p>))}
+            {t.experience.education.map(([a, b, logo]) => (
+              <div class="edu-item">
+                {logo && <img class="edu-logo" src={`/media/${logo}-crema.png`} alt="" loading="lazy" decoding="async" />}
+                <p><strong>{a}</strong><span>{b}</span></p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -355,7 +357,7 @@ const down = '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M
   <footer class="site-footer">
     <div class="wrap footer-inner mono">
       <span class="left"><img src="/media/isotipo-crema.svg" alt="" width="22" height="22" loading="lazy" />© {year} {t.footer.rights}</span>
-      <span>{t.footer.built}</span>
+      <span>{t.footer.built} <span class="blame">{t.footer.blame}</span></span>
       <span>{site.coords}</span>
     </div>
   </footer>
