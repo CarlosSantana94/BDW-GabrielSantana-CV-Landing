@@ -161,6 +161,8 @@ const es = {
     education: [
       ['Ingeniería en Computación', 'Universidad de Guadalajara · 2012 — 2017'],
       ['Certified SCRUM Developer', 'Scrum Alliance · 2021'],
+      ['Certificación Claude', 'Anthropic · En curso, 2026'],
+      ['Certificación ElevenLabs', 'ElevenLabs · En curso, 2026'],
     ],
   },
   stack: {
@@ -172,7 +174,7 @@ const es = {
       ['Móvil', ['Android (Java)', 'Ionic', 'PWA', 'Web Push']],
       ['Datos', ['PostgreSQL', 'Drizzle', 'SQL', 'Firebase', 'Row-Level Security']],
       ['Cloud y operación', ['AWS', 'GCP', 'GitHub Actions', 'Playwright', 'Feature flags']],
-      ['IA', ['Gemini', 'Claude Code', 'Orquestación de agentes']],
+      ['IA', ['Claude Code', 'Orquestación de agentes', 'Prompt engineering', 'Gemini', 'ElevenLabs']],
     ] as [string, string[]][],
   },
   about: {
@@ -182,6 +184,17 @@ const es = {
       'Soy ingeniero en computación por la Universidad de Guadalajara. Empecé enseñando a programar y desde entonces me ha tocado trabajar en sistemas donde un error cuesta caro: banca, farmacéutica e identidades.',
       'Lo que más disfruto es llevar una idea completa a producción: modelar los datos, cuidar la seguridad, escribir las pruebas y luego verla en uso. Hoy construyo con agentes de IA como parte del equipo y documento cada decisión para que el sistema se entienda solo.',
     ],
+    ai: {
+      title: 'Cómo construyo hoy',
+      lede: 'Todo 2026 lo he programado con Claude Code, a diario.',
+      body: 'Dirijo un orquestador que reparte el trabajo entre subagentes especializados. Yo defino la arquitectura, reviso cada cambio y respondo por la seguridad, y las pruebas E2E y los ADRs mantienen todo verificable.',
+      points: [
+        ['424', 'releases de notex.clinic en 3 meses'],
+        ['150', 'decisiones de arquitectura documentadas (ADRs)'],
+        ['58', 'pruebas E2E que corren en cada cambio'],
+      ],
+    },
+    instagram: 'Instagram de Terra Cantaritos',
     offTitle: 'Fuera del código',
     off: 'Montaña, fútbol, viajes por México, y los fines de semana una barra móvil de cantaritos para eventos.',
     photos: [
@@ -203,7 +216,7 @@ const es = {
   cv: {
     title: 'Currículum',
     summary:
-      'Senior Fullstack Developer con 9 años de experiencia en backend Java y Spring Boot para banca, farma y seguridad de identidades, y producto propio en TypeScript y Next.js. Fundador de Buca Digital Works y creador de notex.clinic, un expediente clínico electrónico multi-tenant.',
+      'Senior Fullstack Developer con 9 años de experiencia en backend Java y Spring Boot para banca, farma y seguridad de identidades, y producto propio en TypeScript y Next.js. Fundador de Buca Digital Works y creador de notex.clinic, un expediente clínico electrónico multi-tenant. Durante 2026 he desarrollado a diario con Claude Code y orquestación de agentes de IA.',
     experience: 'Experiencia',
     projects: 'Proyectos seleccionados',
     skills: 'Habilidades',
@@ -366,6 +379,8 @@ const en: Content = {
     education: [
       ['B.S. Computer Engineering', 'Universidad de Guadalajara · 2012 — 2017'],
       ['Certified SCRUM Developer', 'Scrum Alliance · 2021'],
+      ['Claude certification', 'Anthropic · In progress, 2026'],
+      ['ElevenLabs certification', 'ElevenLabs · In progress, 2026'],
     ],
   },
   stack: {
@@ -377,7 +392,7 @@ const en: Content = {
       ['Mobile', ['Android (Java)', 'Ionic', 'PWA', 'Web Push']],
       ['Data', ['PostgreSQL', 'Drizzle', 'SQL', 'Firebase', 'Row-Level Security']],
       ['Cloud & ops', ['AWS', 'GCP', 'GitHub Actions', 'Playwright', 'Feature flags']],
-      ['AI', ['Gemini', 'Claude Code', 'Agent orchestration']],
+      ['AI', ['Claude Code', 'Agent orchestration', 'Prompt engineering', 'Gemini', 'ElevenLabs']],
     ],
   },
   about: {
@@ -387,6 +402,17 @@ const en: Content = {
       'I hold a B.S. in Computer Engineering from Universidad de Guadalajara. I started out teaching people to code, and since then I have worked on systems where mistakes are expensive: banking, pharma and identity.',
       'What I enjoy most is taking an idea all the way to production: modeling the data, getting security right, writing the tests, then watching people use it. Today I build with AI agents as part of the team and document every decision so the system explains itself.',
     ],
+    ai: {
+      title: 'How I build today',
+      lede: 'I have written all of 2026 with Claude Code, every day.',
+      body: 'I run an orchestrator that splits work across specialized subagents. I set the architecture, review every change and own the security, and E2E tests plus ADRs keep it all verifiable.',
+      points: [
+        ['424', 'notex.clinic releases in 3 months'],
+        ['150', 'documented architecture decisions (ADRs)'],
+        ['58', 'E2E tests running on every change'],
+      ],
+    },
+    instagram: 'Terra Cantaritos on Instagram',
     offTitle: 'Off the keyboard',
     off: 'Mountains, football, road trips across Mexico, and on weekends a mobile cantarito bar for events.',
     photos: [
@@ -408,7 +434,7 @@ const en: Content = {
   cv: {
     title: 'Résumé',
     summary:
-      'Senior Fullstack Developer with 9 years of experience in Java and Spring Boot backends for banking, pharma and identity security, plus my own products in TypeScript and Next.js. Founder of Buca Digital Works and creator of notex.clinic, a multi-tenant electronic medical records platform.',
+      'Senior Fullstack Developer with 9 years of experience in Java and Spring Boot backends for banking, pharma and identity security, plus my own products in TypeScript and Next.js. Founder of Buca Digital Works and creator of notex.clinic, a multi-tenant electronic medical records platform. Throughout 2026 I have built daily with Claude Code and AI agent orchestration.',
     experience: 'Experience',
     projects: 'Selected projects',
     skills: 'Skills',

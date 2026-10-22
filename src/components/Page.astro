@@ -252,8 +252,13 @@ const down = '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M
           ))}
         </ol>
         <div class="edu" data-reveal>
-          <h3 class="mono">{t.experience.educationTitle}</h3>
-          {t.experience.education.map(([a, b]) => (<p class="edu-item"><strong>{a}</strong><span>{b}</span></p>))}
+          <div class="edu-head">
+            <h3 class="mono">{t.experience.educationTitle}</h3>
+            <img class="edu-logo" src="/media/udg-crema.png" alt="Universidad de Guadalajara" width="584" height="180" loading="lazy" decoding="async" />
+          </div>
+          <div class="edu-list">
+            {t.experience.education.map(([a, b]) => (<p class="edu-item"><strong>{a}</strong><span>{b}</span></p>))}
+          </div>
         </div>
       </div>
     </section>
@@ -291,10 +296,20 @@ const down = '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M
           <p class="first" data-reveal>{t.about.body[0]}</p>
           <p data-reveal style="--i:1">{t.about.body[1]}</p>
         </div>
+        <div class="ai" data-reveal>
+          <div>
+            <h3 class="mono">{t.about.ai.title}</h3>
+            <p class="ai-lede">{t.about.ai.lede}</p>
+            <p class="ai-body">{t.about.ai.body}</p>
+          </div>
+          <dl class="ai-points">
+            {t.about.ai.points.map(([n, l]) => (<div><dd class="metric-num" data-count={n}>{n}</dd><dt>{l}</dt></div>))}
+          </dl>
+        </div>
         <div class="off">
           <div class="off-head" data-reveal>
             <h3 class="mono">{t.about.offTitle}</h3>
-            <p>{t.about.off}</p>
+            <p>{t.about.off} <a class="ig" href="https://www.instagram.com/terracantaritos/" target="_blank" rel="noopener" aria-label={t.about.instagram} title={t.about.instagram}><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.6"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor"/></svg></a></p>
           </div>
           <div class="strip">
             {t.about.photos.map(([src, alt, cap], i) => (

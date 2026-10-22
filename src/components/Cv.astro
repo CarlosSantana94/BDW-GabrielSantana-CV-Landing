@@ -22,29 +22,29 @@ const host = site.url.replace('https://', '');
       :root { --ink: #2a2a2a; --soft: #5b5750; --faint: #8a8478; --paper: #f1eadb; --line: rgb(42 42 42 / 0.18); --signal: #c8471f; }
       * { box-sizing: border-box; }
       html, body { margin: 0; background: #ddd; }
-      body { font-family: 'Archivo Variable', system-ui, sans-serif; color: var(--ink); font-size: 9.2pt; line-height: 1.45; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      body { font-family: 'Archivo Variable', system-ui, sans-serif; color: var(--ink); font-size: 8.6pt; line-height: 1.38; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
       .sheet { width: 210mm; min-height: 297mm; margin: 0 auto; background: var(--paper); padding: 14mm 14mm 12mm; position: relative; }
       @media print { html, body { background: var(--paper); } .sheet { margin: 0; } }
       .mono { font-family: 'JetBrains Mono Variable', monospace; font-size: 7.2pt; letter-spacing: 0.05em; text-transform: uppercase; }
-      header { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 8mm; padding-bottom: 6mm; border-bottom: 1.4pt solid var(--ink); }
-      h1 { margin: 0; font-size: 30pt; font-weight: 800; font-stretch: 125%; line-height: 0.9; letter-spacing: -0.02em; text-transform: uppercase; }
+      header { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 8mm; padding-bottom: 5mm; border-bottom: 1.4pt solid var(--ink); }
+      h1 { margin: 0; font-size: 26pt; font-weight: 800; font-stretch: 125%; line-height: 0.9; letter-spacing: -0.02em; text-transform: uppercase; }
       .role { margin-top: 3mm; font-size: 11pt; font-weight: 600; font-stretch: 108%; }
       .contact { text-align: right; display: grid; gap: 1.2mm; color: var(--soft); }
       .contact a { color: var(--ink); text-decoration: none; }
       .mark { position: absolute; top: 14mm; right: 14mm; width: 9mm; opacity: 0.9; }
-      .summary { margin: 5mm 0 0; font-size: 10pt; line-height: 1.5; max-width: 165mm; }
-      .cols { display: grid; grid-template-columns: 1fr 52mm; gap: 9mm; margin-top: 6mm; }
+      .summary { margin: 4mm 0 0; font-size: 9.4pt; line-height: 1.5; max-width: 165mm; }
+      .cols { display: grid; grid-template-columns: 1fr 52mm; gap: 8mm; margin-top: 4.5mm; }
       h2 { margin: 0 0 3mm; color: var(--faint); font-weight: 500; }
-      section + section { margin-top: 5.5mm; }
-      .job { display: grid; grid-template-columns: 1fr auto; gap: 0 4mm; padding: 2.6mm 0; border-top: 0.6pt solid var(--line); break-inside: avoid; }
+      section + section { margin-top: 4.5mm; }
+      .job { display: grid; grid-template-columns: 1fr auto; gap: 0 4mm; padding: 2.2mm 0; border-top: 0.6pt solid var(--line); break-inside: avoid; }
       .job h3 { margin: 0; font-size: 11pt; font-weight: 800; font-stretch: 115%; letter-spacing: -0.01em; }
       .job .r { color: var(--soft); font-weight: 500; }
       .job .p { color: var(--faint); white-space: nowrap; padding-top: 1mm; }
       .job .p.now { color: var(--signal); }
-      .job ul { grid-column: 1 / -1; margin: 1.6mm 0 0; padding-left: 3.6mm; color: #3b3935; }
-      .job li { margin: 0.6mm 0; }
+      .job ul { grid-column: 1 / -1; margin: 1.2mm 0 0; padding-left: 3.6mm; color: #3b3935; }
+      .job li { margin: 0.4mm 0; }
       aside section { border-top: 0.6pt solid var(--line); padding-top: 2.6mm; }
-      .group { margin-bottom: 2.6mm; }
+      .group { margin-bottom: 2mm; }
       .group strong { display: block; font-size: 8pt; font-weight: 700; margin-bottom: 0.6mm; }
       .group span { color: #3b3935; }
       .edu strong { display: block; font-weight: 700; }
@@ -107,6 +107,7 @@ const host = site.url.replace('https://', '');
           </section>
           <section class="edu">
             <h2 class="mono">{t.cv.education}</h2>
+            <img src="/media/udg-carbon.png" alt="Universidad de Guadalajara" style="width:30mm;height:auto;margin:0 0 2.4mm;opacity:.9" />
             {t.experience.education.map(([a, b]) => (<p><strong>{a}</strong><span>{b}</span></p>))}
           </section>
           <section>
