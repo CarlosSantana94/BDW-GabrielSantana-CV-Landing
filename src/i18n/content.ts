@@ -79,7 +79,7 @@ const es = {
       {
         id: 'samovil',
         tag: 'Cliente · Android',
-        title: 'SA Móvil',
+        title: 'SAM Móvil',
         body: 'App Android para los socios de clubes deportivos y sociales. La construí desde cero, del backend a la publicación en Play Store.',
         meta: '+1k descargas · +300 socios activos en clubes de Guadalajara',
         stack: ['Android · Java', 'Spring Boot', 'Firebase Auth', 'AWS EC2'],
@@ -213,7 +213,7 @@ const es = {
     founder: 'Fundador',
     founderPoints: [
       'notex.clinic: expediente clínico SaaS. Next.js 15, Postgres con 92 tablas y 124 políticas RLS, 424 releases en 3 meses, 58 pruebas E2E en CI.',
-      'SA Móvil: app Android para clubes deportivos, +1k descargas. SANGO: app de pedidos y reparto con panel admin.',
+      'SAM Móvil: app Android para clubes deportivos, +1k descargas. SANGO: app de pedidos y reparto con panel admin.',
       'Sitios y automatización con WhatsApp Business para clientes.',
     ],
   },
@@ -287,7 +287,7 @@ const en: Content = {
       {
         id: 'samovil',
         tag: 'Client · Android',
-        title: 'SA Móvil',
+        title: 'SAM Móvil',
         body: 'Android app for members of sports and social clubs. I built it from scratch, from the backend to the Play Store release.',
         meta: '1k+ downloads · 300+ active members across Guadalajara clubs',
         stack: ['Android · Java', 'Spring Boot', 'Firebase Auth', 'AWS EC2'],
@@ -418,7 +418,7 @@ const en: Content = {
     founder: 'Founder',
     founderPoints: [
       'notex.clinic: medical-records SaaS. Next.js 15, Postgres with 92 tables and 124 RLS policies, 424 releases in 3 months, 58 E2E tests in CI.',
-      'SA Móvil: Android app for sports clubs, 1k+ downloads. SANGO: ordering and delivery app with an admin panel.',
+      'SAM Móvil: Android app for sports clubs, 1k+ downloads. SANGO: ordering and delivery app with an admin panel.',
       'Websites and WhatsApp Business automation for clients.',
     ],
   },
