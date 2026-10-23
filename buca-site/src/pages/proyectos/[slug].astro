@@ -1,0 +1,8 @@
+---
+import Case from '../../components/Case.astro';
+import { content } from '../../i18n/content';
+
+export const getStaticPaths = () => content.es.projects.map((p) => ({ params: { slug: p.slug } }));
+---
+
+<Case lang="es" slug={Astro.params.slug!} />

@@ -1,0 +1,29 @@
+---
+import { site, type Content } from '../i18n/content';
+import { arrow } from './icons';
+
+interface Props { t: Content }
+const { t } = Astro.props;
+const subject = encodeURIComponent(t.lang === 'es' ? 'Proyecto con Buca' : 'Project with Buca');
+---
+
+<section id="contact" class="section contact" aria-labelledby="contact-title">
+  <div class="wrap">
+    <p class="section-label mono" data-reveal><span>{t.contact.index}</span><span>/</span><span>{t.nav.contact}</span></p>
+    <h2 id="contact-title" class="contact-title display" data-reveal style="--i:1">{t.contact.title}</h2>
+    <div class="contact-row">
+      <div data-reveal>
+        <p>{t.contact.body}</p>
+        <div class="email">
+          <a href={`mailto:${site.email}?subject=${subject}`} aria-label={`${t.contact.email}: ${site.email}`}>{site.email}</a>
+          <button class="copy" type="button" data-copy={site.email} data-copied={t.contact.copied}>{t.contact.copy}</button>
+        </div>
+      </div>
+      <div class="socials" data-reveal style="--i:1">
+        <a class="btn btn--ghost" href={site.linkedin} target="_blank" rel="noopener">LinkedIn<Fragment set:html={arrow} /></a>
+        <a class="btn btn--ghost" href={site.github} target="_blank" rel="noopener">GitHub<Fragment set:html={arrow} /></a>
+        <a class="btn" href={`mailto:${site.email}?subject=${subject}`}>{t.nav.cta}</a>
+      </div>
+    </div>
+  </div>
+</section>

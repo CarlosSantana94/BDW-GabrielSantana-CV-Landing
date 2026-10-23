@@ -1,0 +1,184 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import Contact from './Contact.astro';
+import { content, site, projectPath, altProjectPath, type Lang } from '../i18n/content';
+import { arrow, left } from './icons';
+
+interface Props { lang: Lang; slug: string }
+const { lang, slug } = Astro.props;
+const t = content[lang];
+const idx = t.projects.findIndex((p) => p.slug === slug);
+const p = t.projects[idx];
+const next = t.projects[(idx + 1) % t.projects.length];
+const path = projectPath(t, slug);
+const altPath = altProjectPath(t, slug);
+const title = `${p.title} · ${t.case.label} · ${site.name}`;
+const description = p.lede;
+const titleLines = p.title.includes('.') ? [p.title] : p.title.split(' ');
+const cols = p.features.length >= 3 ? (p.features.length % 4 === 0 ? 4 : 3) : p.features.length;
+
+const sangoShots = lang === 'es'
+  ? [['sango-1-servicio', 'Elige tu servicio'], ['sango-2-prendas', 'Agrega tus prendas'], ['sango-3-fechas', 'Recolección y entrega'], ['sango-4-panel', 'Panel de administración'], ['sango-5-seguimiento', 'Seguimiento en vivo'], ['sango-6-entrega', 'Entregado y calificado']]
+  : [['sango-1-servicio', 'Pick a service'], ['sango-2-prendas', 'Add garments'], ['sango-3-fechas', 'Pickup and delivery'], ['sango-4-panel', 'Admin panel'], ['sango-5-seguimiento', 'Live tracking'], ['sango-6-entrega', 'Delivered and rated']];
+
+const appType = slug === 'notex' ? 'SoftwareApplication' : slug === 'sam-movil' || slug === 'sango' ? 'MobileApplication' : 'WebSite';
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: site.name, item: `${site.url}${t.path}` },
+        { '@type': 'ListItem', position: 2, name: t.work.title, item: `${site.url}${t.path}#work` },
+        { '@type': 'ListItem', position: 3, name: p.title, item: `${site.url}${path}` },
+      ],
+    },
+    {
+      '@type': 'CreativeWork',
+      '@id': `${site.url}${path}#case`,
+      name: `${p.title} · ${t.case.label}`,
+      headline: p.lede,
+      description: p.challenge,
+      url: `${site.url}${path}`,
+      inLanguage: lang === 'es' ? 'es-MX' : 'en',
+      creator: { '@type': 'Organization', name: site.name, url: `${site.url}/` },
+      keywords: p.stack.join(', '),
+      about: {
+        '@type': appType,
+        name: p.title,
+        ...(p.url ? { url: p.url } : {}),
+        ...(appType !== 'WebSite' ? { applicationCategory: slug === 'notex' ? 'HealthApplication' : 'BusinessApplication', operatingSystem: slug === 'notex' ? 'Web' : slug === 'sam-movil' ? 'Android' : 'iOS, Android' } : {}),
+        featureList: p.features.flatMap((f) => f.items),
+      },
+    },
+  ],
+};
+---
+
+<Base t={t} title={title} description={description} path={path} altPath={altPath} ogType="article" jsonLd={jsonLd}>
+  <Header t={t} altHref={altPath} />
+
+  <main id="main">
+    <section class="case-hero" aria-labelledby="case-title">
+      <div class="wrap">
+        <a class="crumb mono hero-fade" href={`${t.path}#work`}><Fragment set:html={left} />{t.case.back}</a>
+        <p class="project-tag mono hero-fade"><span class="dot" aria-hidden="true"></span>{p.tag}</p>
+        <div class="case-title-wrap">
+          <h1 id="case-title" class="case-title display">
+            {titleLines.map((l, i) => <span class="line"><span style={`animation-delay:${i * 0.1}s`}>{l}</span></span>)}
+          </h1>
+        </div>
+        <div class="case-intro">
+          <div class="hero-fade" style="--i:1">
+            <p class="case-lede">{p.lede}</p>
+            {p.url && (
+              <div class="hero-actions">
+                <a class="btn" href={p.url} target="_blank" rel="noopener">{p.urlLabel}<Fragment set:html={arrow} /></a>
+              </div>
+            )}
+          </div>
+          <dl class="facts mono hero-fade" style="--i:2">
+            {p.facts.map(([k, v]) => (<div><dt>{k}</dt><dd>{v}</dd></div>))}
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    {p.metrics && (
+      <section class="case-metrics" aria-label="Metrics">
+        <div class="wrap">
+          <div class="feature" data-reveal>
+            <dl class="metrics" style={`--cols:${p.metrics.length >= 3 ? 3 : p.metrics.length}`}>
+              {p.metrics.map(([n, l]) => (
+                <div class="metric"><dd class="metric-num" data-count={n}>{n}</dd><dt class="metric-label">{l}</dt></div>
+              ))}
+            </dl>
+          </div>
+        </div>
+      </section>
+    )}
+
+    <section class="section" aria-label={`${t.case.challenge} · ${t.case.solution}`}>
+      <div class="wrap story">
+        <div data-reveal>
+          <h2 class="mono">{t.case.challenge}</h2>
+          <p>{p.challenge}</p>
+        </div>
+        <div data-reveal style="--i:1">
+          <h2 class="mono">{t.case.solution}</h2>
+          <p>{p.solution}</p>
+        </div>
+      </div>
+    </section>
+
+    {p.media === 'sango' && (
+      <section class="section" style="padding-top:0" aria-labelledby="gallery-title">
+        <div class="wrap">
+          <p class="section-label mono" data-reveal><span>—</span><span id="gallery-title">{t.case.gallery}</span></p>
+          <div class="gallery-wrap">
+            <div class="gallery" data-reveal tabindex="0" aria-label={t.case.gallery}>
+              {sangoShots.map(([src, cap], i) => (
+                <figure>
+                  <img src={`/img/${src}.webp`} alt={`SANGO · ${cap}`} width="540" height="960" loading="lazy" decoding="async" />
+                  <figcaption class="mono">{String(i + 1).padStart(2, '0')} · {cap}</figcaption>
+                </figure>
+              ))}
+            </div>
+            <div class="phone" data-reveal style="--i:1">
+              <video data-autoplay muted loop playsinline preload="none" poster="/media/sango-poster.webp" aria-label={t.work.videoLabel} width="540" height="960">
+                <source src="/media/sango-reel.mp4" type="video/mp4" />
+              </video>
+            </div>
+          </div>
+        </div>
+      </section>
+    )}
+
+    <section class="section" style="padding-top:0" aria-labelledby="features-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="section-label mono" data-reveal><span>01</span><span>/</span><span>{t.case.features}</span></p>
+            <h2 id="features-title" class="section-title display" data-reveal style="--i:1">{t.case.features}</h2>
+          </div>
+        </div>
+        <div class="fgrid" style={`--cols:${cols}`}>
+          {p.features.map((f, i) => (
+            <div class="fgroup" data-reveal style={`--i:${i % cols}`}>
+              <h3 class="mono"><span>{String(i + 1).padStart(2, '0')}</span>{f.title}</h3>
+              <ul>{f.items.map((it) => <li>{it}</li>)}</ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0" aria-label={t.case.stack}>
+      <div class:list={['wrap tech', { 'no-decisions': !p.decisions }]}>
+        {p.decisions && (
+          <div data-reveal>
+            <h2 class="mono">{t.case.decisions}</h2>
+            <ol class="decisions">{p.decisions.map((d) => <li>{d}</li>)}</ol>
+          </div>
+        )}
+        <div data-reveal style="--i:1">
+          <h2 class="mono">{t.case.stack}</h2>
+          <ul class="chips">{p.stack.map((s) => <li class="chip">{s}</li>)}</ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <a class="next" href={projectPath(t, next.slug)}>
+        <span class="mono">{t.case.next}</span>
+        <span class="next-title"><span>{next.title}</span><span class="prow-link" aria-hidden="true"><Fragment set:html={arrow} /></span></span>
+      </a>
+    </div>
+
+    <Contact t={t} />
+  </main>
+
+  <Footer t={t} />
+</Base>

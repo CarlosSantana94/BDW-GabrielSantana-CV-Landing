@@ -1,0 +1,80 @@
+---
+import '../styles/global.css';
+import { site, type Content } from '../i18n/content';
+
+interface Props {
+  t: Content;
+  title?: string;
+  description?: string;
+  path?: string;
+  altPath?: string;
+  ogImage?: string;
+  ogType?: string;
+  noindex?: boolean;
+  jsonLd?: object;
+}
+
+const {
+  t,
+  title = t.meta.title,
+  description = t.meta.description,
+  path = t.path,
+  altPath = t.altPath,
+  ogImage = `/og-${t.lang}.png`,
+  ogType = 'website',
+  noindex = false,
+  jsonLd,
+} = Astro.props;
+const canonical = new URL(path, site.url).href;
+const esUrl = new URL(t.lang === 'es' ? path : altPath, site.url).href;
+const enUrl = new URL(t.lang === 'en' ? path : altPath, site.url).href;
+const og = new URL(ogImage, site.url).href;
+---
+
+<!doctype html>
+<html lang={t.lang === 'es' ? 'es-MX' : 'en'}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex ? <meta name="robots" content="noindex, nofollow" /> : (
+      <>
+        <link rel="alternate" hreflang="es-MX" href={esUrl} />
+        <link rel="alternate" hreflang="en" href={enUrl} />
+        <link rel="alternate" hreflang="x-default" href={esUrl} />
+      </>
+    )}
+    <meta name="author" content={site.name} />
+    <meta name="theme-color" content="#1C1B1A" />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={og} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${site.name} · ${t.hero.eyebrow}`} />
+    <meta property="og:locale" content={t.locale} />
+    <meta property="og:locale:alternate" content={t.lang === 'es' ? 'en_US' : 'es_MX'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={og} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

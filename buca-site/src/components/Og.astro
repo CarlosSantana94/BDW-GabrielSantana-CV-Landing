@@ -1,0 +1,38 @@
+---
+import '../styles/global.css';
+import { content, type Lang } from '../i18n/content';
+
+interface Props { lang: Lang }
+const t = content[Astro.props.lang];
+---
+
+<!doctype html>
+<html lang={t.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>OG</title>
+    <style>
+      body { width: 1200px; height: 630px; overflow: hidden; }
+      body::after { opacity: 0.06; }
+      .og { position: relative; height: 100%; padding: 64px 72px; display: flex; flex-direction: column; justify-content: space-between; }
+      .og header { display: flex; justify-content: space-between; align-items: center; color: var(--crema-dim); }
+      .og header span { display: flex; align-items: center; gap: 10px; }
+      .og h1 { font-size: 112px; line-height: 0.88; white-space: nowrap; }
+      .og h1 .outline { color: transparent; -webkit-text-stroke: 2px var(--crema); }
+      .og footer { display: flex; justify-content: space-between; align-items: end; border-top: 1px solid var(--line); padding-top: 24px; }
+      .og footer p { font-size: 28px; font-weight: 600; font-stretch: 108%; max-width: 24ch; line-height: 1.15; }
+      .og footer img { width: 280px; }
+    </style>
+  </head>
+  <body>
+    <div class="og">
+      <header class="mono"><span><span class="dot"></span>{t.hero.eyebrow}</span><span>notex.clinic · SANGO · SAM Móvil</span></header>
+      <h1 class="display"><span>{t.hero.line1}</span><br /><span class="outline">{t.hero.line2}</span></h1>
+      <footer>
+        <p>{t.hero.lede}</p>
+        <img src="/media/wordmark-crema.svg" alt="Buca Digital Works" />
+      </footer>
+    </div>
+  </body>
+</html>
