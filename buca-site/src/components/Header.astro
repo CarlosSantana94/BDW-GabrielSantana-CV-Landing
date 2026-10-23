@@ -1,0 +1,30 @@
+---
+import { site, type Content } from '../i18n/content';
+
+interface Props { t: Content; altHref?: string }
+const { t, altHref = t.altPath } = Astro.props;
+// On case pages the section links point back to the home page
+const home = Astro.url.pathname === t.path ? '' : t.path;
+---
+
+<a class="skip" href="#main">{t.skip}</a>
+<header class="site-header" data-header>
+  <div class="wrap header-inner">
+    <a class="brand" href={t.path} aria-label={`${site.name} · ${t.lang === 'es' ? 'Inicio' : 'Home'}`}>
+      <img src="/media/isotipo-crema.svg" alt="" width="26" height="26" />
+      <span>Buca Digital Works</span>
+    </a>
+    <nav class="nav" aria-label={t.lang === 'es' ? 'Principal' : 'Main'}>
+      <a href={`${home}#services`}>{t.nav.services}</a>
+      <a href={`${home}#work`}>{t.nav.work}</a>
+      <a href={`${home}#process`}>{t.nav.process}</a>
+      <a href={`${home}#studio`}>{t.nav.studio}</a>
+      <a href={`${home}#contact`}>{t.nav.contact}</a>
+    </nav>
+    <div class="header-tools">
+      <span class="clock mono" aria-hidden="true">GDL <b data-clock>--:--</b></span>
+      <a class="lang" href={altHref} hreflang={t.lang === 'es' ? 'en' : 'es-MX'} lang={t.lang === 'es' ? 'en' : 'es'} aria-label={`${t.altLabel} · ${t.altName}`}>{t.altLabel}</a>
+      <a class="btn btn--sm" href={`${home}#contact`}><span class="hide-sm">{t.nav.cta}</span><span class="only-sm">{t.nav.contact}</span></a>
+    </div>
+  </div>
+</header>

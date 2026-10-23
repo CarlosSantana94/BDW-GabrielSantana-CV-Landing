@@ -1,0 +1,250 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import Contact from './Contact.astro';
+import { content, site, projectPath, type Lang } from '../i18n/content';
+import { arrow, right, down } from './icons';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = content[lang];
+const byslug = Object.fromEntries(t.projects.map((p) => [p.slug, p]));
+const notex = byslug.notex;
+const sango = byslug.sango;
+const rest = t.projects.filter((p) => p.slug !== 'notex' && p.slug !== 'sango');
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${site.url}/#website`,
+      url: `${site.url}/`,
+      name: site.name,
+      inLanguage: ['es-MX', 'en'],
+      publisher: { '@id': `${site.url}/#org` },
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${site.url}${t.path}#page`,
+      url: `${site.url}${t.path}`,
+      name: t.meta.title,
+      description: t.meta.description,
+      inLanguage: t.lang === 'es' ? 'es-MX' : 'en',
+      isPartOf: { '@id': `${site.url}/#website` },
+      about: { '@id': `${site.url}/#org` },
+    },
+    {
+      '@type': 'ProfessionalService',
+      '@id': `${site.url}/#org`,
+      name: site.name,
+      legalName: site.legal,
+      url: `${site.url}/`,
+      logo: `${site.url}/icon-512.png`,
+      image: `${site.url}/og-es.png`,
+      email: site.email,
+      description: t.meta.description,
+      address: { '@type': 'PostalAddress', addressLocality: 'Guadalajara', addressRegion: 'Jalisco', addressCountry: 'MX' },
+      areaServed: { '@type': 'Country', name: 'Mexico' },
+      founder: { '@type': 'Person', name: 'Carlos Gabriel Santana Pulido', alternateName: site.founder, url: site.founderUrl, sameAs: [site.linkedin, site.github] },
+      knowsAbout: ['SaaS', 'Android', 'Ionic', 'Next.js', 'Spring Boot', 'PostgreSQL', 'WhatsApp Business API', 'SEO', 'Electronic Health Records'],
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: t.services.title,
+        itemListElement: t.services.items.map((s) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: s.title, description: s.body } })),
+      },
+      sameAs: [site.linkedin, site.github],
+    },
+    {
+      '@type': 'ItemList',
+      name: t.work.title,
+      itemListElement: t.projects.map((p, i) => ({ '@type': 'ListItem', position: i + 1, name: p.title, url: `${site.url}${projectPath(t, p.slug)}` })),
+    },
+  ],
+};
+---
+
+<Base t={t} jsonLd={jsonLd}>
+  <Header t={t} />
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap">
+        <div class="hero-grid">
+          <div>
+            <p class="hero-eyebrow mono hero-fade"><span class="dot" aria-hidden="true"></span>{t.hero.eyebrow}</p>
+            <h1 id="hero-title" class="hero-name display">
+              <span class="line"><span>{t.hero.line1}</span></span>
+              <span class="line"><span class="outline">{t.hero.line2}</span></span>
+            </h1>
+          </div>
+          <figure class="logo-card">
+            <div class="logo-frame">
+              <buca-logo-animation theme="carbon" format="square" autoplay="false" aria-hidden="true"></buca-logo-animation>
+            </div>
+            <figcaption class="mono"><span>{site.city}</span><span>{site.coords}</span></figcaption>
+          </figure>
+        </div>
+
+        <div class="hero-copy">
+          <div>
+            <p class="hero-lede hero-fade" style="--i:1">{t.hero.lede}</p>
+            <div class="hero-actions hero-fade" style="--i:3">
+              <a class="btn" href="#work">{t.hero.ctaWork}<Fragment set:html={down} /></a>
+              <a class="btn btn--ghost" href="#contact">{t.hero.ctaContact}</a>
+            </div>
+          </div>
+          <div class="hero-fade" style="--i:2">
+            <p class="hero-body">{t.hero.body}</p>
+            <dl class="status mono">
+              {t.hero.status.map(([k, v]) => (<div><dt>{k}</dt><dd>{v}</dd></div>))}
+            </dl>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="section" aria-labelledby="services-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="section-label mono" data-reveal><span>{t.services.index}</span><span>/</span><span>{t.services.title}</span></p>
+            <h2 id="services-title" class="section-title display" data-reveal style="--i:1">{t.services.title}</h2>
+          </div>
+          <p class="section-intro" data-reveal style="--i:2">{t.services.intro}</p>
+        </div>
+        <div class="services">
+          {t.services.items.map((s, i) => (
+            <article class="service" data-reveal style={`--i:${i}`}>
+              <p class="service-num mono">{String(i + 1).padStart(2, '0')}</p>
+              <h3>{s.title}</h3>
+              <p>{s.body}</p>
+              <ul class="chips">
+                {s.examples.map((slug) => <li><a class="chip" href={projectPath(t, slug)}>{byslug[slug].title}</a></li>)}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Work -->
+    <section id="work" class="section" style="padding-top:0" aria-labelledby="work-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="section-label mono" data-reveal><span>{t.work.index}</span><span>/</span><span>{t.work.title}</span></p>
+            <h2 id="work-title" class="section-title display" data-reveal style="--i:1">{t.work.title}</h2>
+          </div>
+          <p class="section-intro" data-reveal style="--i:2">{t.work.intro}</p>
+        </div>
+
+        <article class="feature" data-reveal aria-labelledby="notex-title">
+          <img class="feature-mark" src="/media/isotipo-carbon.svg" alt="" width="460" height="460" loading="lazy" />
+          <div class="feature-top">
+            <div>
+              <p class="tag mono">{notex.tag}</p>
+              <h3 id="notex-title" class="feature-title display">{notex.title}</h3>
+              <p class="feature-summary">{notex.card}</p>
+              <div class="feature-actions">
+                <a class="btn" href={projectPath(t, 'notex')}>{t.work.caseLink}<Fragment set:html={right} /></a>
+                <a class="btn btn--ghost" href={notex.url} target="_blank" rel="noopener">{notex.urlLabel}<Fragment set:html={arrow} /></a>
+              </div>
+            </div>
+            <dl class="metrics">
+              {notex.metrics!.map(([n, l]) => (
+                <div class="metric"><dd class="metric-num" data-count={n}>{n}</dd><dt class="metric-label">{l}</dt></div>
+              ))}
+            </dl>
+          </div>
+        </article>
+
+        <article class="showcase" aria-labelledby="sango-title">
+          <div>
+            <p class="project-tag mono" data-reveal>{sango.tag}</p>
+            <h3 id="sango-title" class="project-title" data-reveal style="--i:1">{sango.title}</h3>
+            <p class="project-body" data-reveal style="--i:2">{sango.lede}</p>
+            <p class="project-meta mono" data-reveal style="--i:3">{sango.status}</p>
+            <ul class="chips" data-reveal style="--i:4">{sango.stack.map((s) => <li class="chip">{s}</li>)}</ul>
+            <a class="link-arrow" data-reveal style="--i:5" href={projectPath(t, 'sango')}>{t.work.caseLink}<Fragment set:html={right} /></a>
+          </div>
+          <div class="phone" data-reveal style="--i:2">
+            <video data-autoplay muted loop playsinline preload="none" poster="/media/sango-poster.webp" aria-label={t.work.videoLabel} width="540" height="960">
+              <source src="/media/sango-reel.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </article>
+
+        <div class="plist">
+          {rest.map((p, i) => (
+            <article class="prow" data-reveal style={`--i:${i}`} aria-labelledby={`p-${p.slug}`}>
+              <div>
+                <p class="project-tag mono">{p.tag}</p>
+                <h3 id={`p-${p.slug}`} class="project-title">{p.title}</h3>
+              </div>
+              <div>
+                <p class="project-body">{p.card}</p>
+                <p class="project-meta mono">{p.metrics ? p.metrics.map(([n, l]) => `${n} ${l}`).join(' · ') : p.status}</p>
+                <ul class="chips">{p.stack.map((s) => <li class="chip">{s}</li>)}</ul>
+              </div>
+              <a class="prow-link" href={projectPath(t, p.slug)} aria-label={`${t.work.caseShort}: ${p.title}`}><Fragment set:html={arrow} /></a>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Process -->
+    <section id="process" class="section" style="padding-top:0" aria-labelledby="process-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="section-label mono" data-reveal><span>{t.process.index}</span><span>/</span><span>{t.process.title}</span></p>
+            <h2 id="process-title" class="section-title display" data-reveal style="--i:1">{t.process.title}</h2>
+          </div>
+          <p class="section-intro" data-reveal style="--i:2">{t.process.intro}</p>
+        </div>
+        <ol class="steps">
+          {t.process.steps.map(([h, b], i) => (
+            <li class="step" data-reveal style={`--i:${i}`}>
+              <p class="step-num" aria-hidden="true"></p>
+              <h3>{h}</h3>
+              <p>{b}</p>
+            </li>
+          ))}
+        </ol>
+        <div class="principles">
+          <h3 class="mono" data-reveal>{t.principles.title}</h3>
+          <ul>
+            {t.principles.items.map(([h, b], i) => (
+              <li data-reveal style={`--i:${i}`}><strong>{h}</strong><span>{b}</span></li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Studio -->
+    <section id="studio" class="studio" aria-labelledby="studio-title">
+      <div class="wrap studio-inner">
+        <div>
+          <buca-logo-animation theme="carbon" format="banner" autoplay="false" aria-hidden="true"></buca-logo-animation>
+        </div>
+        <div data-reveal>
+          <p class="section-label mono"><span>{t.studio.index}</span><span>/</span><span id="studio-title">{t.studio.title}</span></p>
+          <p class="first">{t.studio.body[0]}</p>
+          <p>{t.studio.body[1]}</p>
+          <a class="link-arrow" href={site.founderUrl} target="_blank" rel="noopener">{t.studio.link}<Fragment set:html={arrow} /></a>
+          <p class="legal mono">{site.legal} · {site.city}</p>
+        </div>
+      </div>
+    </section>
+
+    <Contact t={t} />
+  </main>
+
+  <Footer t={t} />
+</Base>

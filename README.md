@@ -25,3 +25,7 @@ Photos get the brand duotone with `node scripts/duotone.mjs <input> <name> [widt
 ## Deploy
 
 Any static host works (Vercel, Netlify, Cloudflare Pages). Build command `npm run build`, output `dist/`.
+
+## Buca Digital Works site
+
+The studio site lives in [`buca-site/`](buca-site/) as its own Astro project. Deploy it as a separate service with that folder as the root directory.

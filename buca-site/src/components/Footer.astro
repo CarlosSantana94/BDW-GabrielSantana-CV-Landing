@@ -1,0 +1,94 @@
+---
+import { site, type Content } from '../i18n/content';
+
+interface Props { t: Content }
+const { t } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap footer-inner mono">
+    <span class="left"><img src="/media/isotipo-crema.svg" alt="" width="22" height="22" loading="lazy" />© {year} {site.legal}</span>
+    <span>{t.footer.built}</span>
+    <span>{site.coords}</span>
+  </div>
+</footer>
+
+<script is:inline src="/media/buca-logo-animation.js" defer></script>
+<script>
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Header: solid after scrolling starts, hides on scroll down
+  const header = document.querySelector<HTMLElement>('[data-header]')!;
+  let lastY = scrollY;
+  addEventListener('scroll', () => {
+    const y = scrollY;
+    header.classList.toggle('is-scrolled', y > 24);
+    header.classList.toggle('is-hidden', y > 400 && y > lastY + 4);
+    if (y < lastY - 4) header.classList.remove('is-hidden');
+    lastY = y;
+  }, { passive: true });
+
+  // Guadalajara local time
+  const clock = document.querySelector('[data-clock]');
+  if (clock) {
+    const fmt = new Intl.DateTimeFormat('es-MX', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'America/Mexico_City' });
+    const tick = () => { clock.textContent = fmt.format(new Date()); };
+    tick();
+    setInterval(tick, 30_000);
+  }
+
+  // Count-up for numeric metrics ("1000+" counts to 1000 and keeps the "+")
+  const countUp = (el: HTMLElement) => {
+    const raw = el.dataset.count ?? '';
+    const target = parseInt(raw, 10);
+    if (!target || reduce) return;
+    const suffix = raw.replace(/^\d+/, '');
+    const start = performance.now();
+    const dur = 1400;
+    const step = (now: number) => {
+      const p = Math.min(1, (now - start) / dur);
+      el.textContent = Math.round(target * (1 - Math.pow(1 - p, 4))) + (p === 1 ? suffix : '');
+      if (p < 1) requestAnimationFrame(step);
+    };
+    el.textContent = '0';
+    requestAnimationFrame(step);
+  };
+
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (!e.isIntersecting) continue;
+      e.target.classList.add('is-in');
+      e.target.querySelectorAll<HTMLElement>('[data-count]').forEach(countUp);
+      io.unobserve(e.target);
+    }
+  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.12 });
+  document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+
+  // Video and logo animations only run while visible
+  const media = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      const el = e.target as HTMLVideoElement;
+      if (e.isIntersecting) {
+        if (el.tagName === 'VIDEO') { if (!reduce) el.play().catch(() => {}); }
+        else if (!el.dataset.played) { el.dataset.played = '1'; reduce ? (el as any).seek?.(4) : el.play(); }
+      } else if (el.tagName === 'VIDEO') el.pause();
+    }
+  }, { threshold: 0.35 });
+  document.querySelectorAll('video[data-autoplay]').forEach((v) => media.observe(v));
+  customElements.whenDefined('buca-logo-animation').then(() => {
+    document.querySelectorAll('buca-logo-animation').forEach((el) => media.observe(el));
+  });
+
+  // Copy email
+  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((b) => {
+    const label = b.textContent;
+    b.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(b.dataset.copy!);
+        b.textContent = b.dataset.copied!;
+        setTimeout(() => { b.textContent = label; }, 1600);
+      } catch { location.href = `mailto:${b.dataset.copy}`; }
+    });
+  });
+</script>

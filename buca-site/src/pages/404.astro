@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { content } from '../i18n/content';
+import { left } from '../components/icons';
+
+const t = content.es;
+---
+
+<Base t={t} title="404 · Buca Digital Works" noindex>
+  <Header t={t} />
+  <main id="main">
+    <section class="hero" aria-labelledby="nf-title">
+      <div class="wrap">
+        <p class="hero-eyebrow mono"><span class="dot" aria-hidden="true"></span>404</p>
+        <h1 id="nf-title" class="hero-name display">
+          <span class="line"><span>Página</span></span>
+          <span class="line"><span class="outline">perdida.</span></span>
+        </h1>
+        <div class="hero-copy">
+          <p class="hero-lede">Esta ruta no existe. / This page does not exist.</p>
+          <div class="hero-actions">
+            <a class="btn" href="/"><Fragment set:html={left} />Inicio</a>
+            <a class="btn btn--ghost" href="/en/">Home</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer t={t} />
+</Base>
